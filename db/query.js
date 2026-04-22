@@ -15,7 +15,29 @@ async function addUser(firstName, lastName, username, password) {
     }
 }
 
+async function findUserByUsername(username) {
+    try {
+        const { rows } = await pool.query("SELECT * FROM users WHERE username= $1 ", [username]);
+        return rows;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
+
+async function findUserByID(id) {
+    try {
+        const { rows } = await pool.query("SELECT * FROM users WHERE id= $1 ", [id]);
+        return rows;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     doesUsernameExist,
     addUser,
+    findUserByUsername,
+    findUserByID,
 }

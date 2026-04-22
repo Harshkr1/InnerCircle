@@ -1,9 +1,14 @@
 const db = require("../db/query");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
+const passport = require("passport");
 
 async function showSignUpForm(request, response) {
     response.render("sign-up");
+}
+
+async function showIndexPage(request, response) {
+    response.render("index", { user: response.locals.currentUser });
 }
 
 async function createNewUser(request, response) {
@@ -32,7 +37,30 @@ async function createNewUser(request, response) {
     }
 }
 
+function showLoginPage(request, reponse) {
+    reponse.render("log-in")
+}
+
+async function logIn(request, response, next) {
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/log-in"
+    })(request, response, next);
+}
+
+function logOut(request, response, next) {
+    request.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        response.redirect("/");
+    });
+}
 module.exports = {
     showSignUpForm,
     createNewUser,
+    showLoginPage,
+    logIn,
+    showIndexPage,
+    logOut,
 }
