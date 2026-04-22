@@ -25,7 +25,7 @@ async function createNewUser(request, response) {
     });
     try {
         const hashedPassword = await bcrypt.hash(password, 10 /* saltLength */)
-        await db.addUser(firstName, lastName, username, password);
+        await db.addUser(firstName, lastName, username, hashedPassword);
         response.render("log-in");
     } catch (error) {
         throw new Error(error);
