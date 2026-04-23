@@ -7,8 +7,24 @@ async function showSignUpForm(request, response) {
     response.render("sign-up");
 }
 
+async function loadIndexPage(request, response) {
+    try {
+        let userId = null;;
+        const isAuthenticated = request.isAuthenticated();
+        let memberShipStatus = null;
+        if (isAuthenticated) {
+            userId = await db.findUserIdByUsername(response.locals.currentUser.username);
+            memberShipStatus = await db.getMemberShipStatus(userId);
+        }
+        const messages = await db.findAllMessages();
+        return response.render("index", { messages: messages, isAuthenticated: isAuthenticated, memberShipStatus: memberShipStatus });
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 async function showIndexPage(request, response) {
-    response.render("index", { user: response.locals.currentUser });
+    await loadIndexPage(request, response);
 }
 
 async function createNewUser(request, response) {
@@ -38,6 +54,10 @@ async function createNewUser(request, response) {
 }
 
 function showLoginPage(request, reponse) {
+    // if already authenticated then not need to Authenticate again
+    if (request.isAuthenticated()) {
+        loadIndexPage(request, response);
+    }
     reponse.render("log-in")
 }
 
@@ -56,6 +76,45 @@ function logOut(request, response, next) {
         response.redirect("/");
     });
 }
+
+function showAddMessagePage(request, response, next) {
+    if (!request.isAuthenticated()) {
+        return response.render("log-in", { error: "Please login first" });
+    }
+    return response.render("add-message");
+}
+
+async function addNewMessage(request, response, next) {
+    try {
+        const title = request.body.title;
+        const message = request.body.messageText;
+        const username = response.locals.currentUser.username;
+        const userId = await db.findUserIdByUsername(username);
+        await db.addMessage(userId, title, message, username);
+        return loadIndexPage(request, response);
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function showUpdateMemberShipForm(request, response, next) {
+    response.render("update-membership");
+}
+
+async function updateMembershipStatus(request, response) {
+    try {
+        if (request.body.answer == "echo") {
+            const userId = await db.findUserIdByUsername(response.locals.currentUser.username);
+            await db.updateMembershipStatus(userId);
+            return loadIndexPage(request, response);
+        } else {
+            return response.render("update-membership");
+        }
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
 module.exports = {
     showSignUpForm,
     createNewUser,
@@ -63,4 +122,8 @@ module.exports = {
     logIn,
     showIndexPage,
     logOut,
+    showAddMessagePage,
+    addNewMessage,
+    showUpdateMemberShipForm,
+    updateMembershipStatus,
 }

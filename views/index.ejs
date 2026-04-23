@@ -6,18 +6,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Index Page</title>
   </head>
+
   <body>
-    <% if(user) {%>
+    <% if (currentUser) { %>
+      <h1><%= currentUser.username %></h1>
 
-    <h1><%= user.username %></h1>
-        <h1><%= user.first_name %></h1>
-    <h1><%= user.last_name %></h1>
-    <h1><%= user.membership_status %></h1>
-    <h1><%= user.created_at %></h1>
+      <a href="/add-message">Add Message</a>
 
-    <a href="/log-out">LOG OUT</a>
-    <%} else{%>
-        <h1> You are not logged in</h1>
-    <%}%>
+      <% if (memberShipStatus === "elite") { %>
+        <h3>You are already an elite</h3>
+      <% } else { %>
+        <a href="/update-membership">
+          Update Membership to be an elite
+        </a>
+      <% } %>
+
+      <br /><br />
+      <a href="/log-out">LOG OUT</a>
+
+    <% } else { %>
+      <h1>You are not logged in</h1>
+      <a href="/log-in">LOG IN</a>
+    <% } %>
+
+    <hr />
+
+    <% if (!messages || messages.length === 0) { %>
+      <h2>No Messages Stored</h2>
+    <% } else { %>
+      <% messages.forEach((message) => { %>
+      <%- include('./partials/message', { 
+        message: message, 
+        isAuthenticated: isAuthenticated,
+        memberShipStatus:memberShipStatus,
+      }) %>
+      <% }) %>
+    <% } %>
+
   </body>
 </html>

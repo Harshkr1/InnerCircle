@@ -1,0 +1,15 @@
+<div class="card" style="width: 18rem">
+  <div class="card-body">
+    <h5 class="card-title"><%=message.title%></h5>
+    <p class="card-text">
+      By <%= memberShipStatus === "elite" ? message.username : "****" %>
+    </p>
+  </div>
+  <div class="card-body">
+    <p class="card-content"><%=message.message_text%></p>
+    <footer>
+      Posted at <%= memberShipStatus === "elite" ? message.created_at : "****"
+      %>
+    </footer>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 const express = require("express");
 const indexRouter = express.Router();
-const { showSignUpForm, createNewUser, showLoginPage, logIn, showIndexPage,logOut } = require("../controller/indexController.js");
+const { showSignUpForm, createNewUser, showLoginPage, logIn, showIndexPage, logOut, showAddMessagePage, addNewMessage, showUpdateMemberShipForm, updateMembershipStatus } = require("../controller/indexController.js");
 const { customValidator } = require("../controller/formValidator.js");
 const passport = require("passport");
 
@@ -13,6 +13,12 @@ indexRouter.get("/log-in", showLoginPage);
 indexRouter.post("/log-in", logIn);
 
 indexRouter.get("/log-out", logOut);
+
+indexRouter.get("/add-message", showAddMessagePage);
+indexRouter.post("/add-message", addNewMessage);
+
+indexRouter.get("/update-membership", showUpdateMemberShipForm);
+indexRouter.post("/update-membership", updateMembershipStatus);
 
 module.exports = {
     indexRouter,

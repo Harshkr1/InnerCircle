@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Add Message</title>
+  </head>
+  <body>
+    <form action="/add-message" method="POST">
+      <label for="title">title:</label>
+      <input
+        type="text"
+        placeholder="Your Lovely Title"
+        id="title"
+        name="title"
+        required
+      />
+      <label for="messageText">Message:</label>
+      <input
+        type="text"
+        placeholder="Hi There lovely people"
+        id="messageText"
+        name="messageText"
+        required
+      />
+      <button type="submit">Add to Board</button>
+    </form>
+  </body>
+</html>
