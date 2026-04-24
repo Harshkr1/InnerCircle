@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Add Message</title>
+    <title>Update Message</title>
   </head>
   <body>
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>    <form action="/add-message" method="POST">
+<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
+    <form action="/update-message?currentMessageId=<%=messageID%>" method="POST">
       <label for="title">title:</label>
       <input
         type="text"
@@ -24,7 +25,7 @@
         name="messageText"
         required
       />
-      <button type="submit">Add to Board</button>
+      <button type="submit">Update</button>
     </form>
   </body>
 </html>

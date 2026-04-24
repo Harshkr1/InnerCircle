@@ -2,11 +2,16 @@
   <div class="card-body">
     <h5 class="card-title"><%=message.title%></h5>
     <p class="card-text">
-      By <%= memberShipStatus === "elite" ? message.username : "****" %>
+      By <%= (memberShipStatus === "elite" || message.user_id == userId) ? message.username : "****" %>
     </p>
   </div>
   <div class="card-body">
     <p class="card-content"><%=message.message_text%></p>
+    <%if(message.user_id == userId){%>
+      <a href="/delete?messageId=<%=message.id%>">Delete this message</a>
+      <a href="/update-message?messageId=<%=message.id%>">Update this message</a>
+    <%}%>
+
     <footer>
       Posted at <%= memberShipStatus === "elite" ? message.created_at : "****"
       %>

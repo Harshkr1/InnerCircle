@@ -7,6 +7,7 @@
     <title>Update Membership</title>
   </head>
   <body>
+<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
     <form action="/update-membership" method="POST">
       <label for="answer"
         >I speak without a mouth and hear without ears. What am I?</label

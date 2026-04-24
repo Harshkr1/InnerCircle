@@ -7,8 +7,7 @@
     <title>Sign Up</title>
   </head>
   <body>
-
- 
+<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
     <form action="/log-in" method="POST">
       <label for="username">Username:</label>
       <input type="email" placeholder="abc@email.com" id="username" name="username" required />

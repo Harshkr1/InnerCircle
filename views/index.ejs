@@ -8,26 +8,9 @@
   </head>
 
   <body>
-    <% if (currentUser) { %>
-      <h1><%= currentUser.username %></h1>
 
-      <a href="/add-message">Add Message</a>
+<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
 
-      <% if (memberShipStatus === "elite") { %>
-        <h3>You are already an elite</h3>
-      <% } else { %>
-        <a href="/update-membership">
-          Update Membership to be an elite
-        </a>
-      <% } %>
-
-      <br /><br />
-      <a href="/log-out">LOG OUT</a>
-
-    <% } else { %>
-      <h1>You are not logged in</h1>
-      <a href="/log-in">LOG IN</a>
-    <% } %>
 
     <hr />
 
@@ -39,6 +22,7 @@
         message: message, 
         isAuthenticated: isAuthenticated,
         memberShipStatus:memberShipStatus,
+        userId:userId,
       }) %>
       <% }) %>
     <% } %>

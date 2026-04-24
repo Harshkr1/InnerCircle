@@ -85,6 +85,37 @@ async function findUserByID(id) {
     }
 }
 
+async function deleteMessageByID(messageID) {
+    try {
+        await pool.query("DELETE FROM message WHERE id= $1 ", [messageID]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
+
+async function updateMessageByID(messageID, title, text) {
+    try {
+        await pool.query("UPDATE message SET title = $2 , message_text = $3  WHERE id= $1 ", [messageID, title, text]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
+
+async function getFullNameByID(userID) {
+    try {
+        const { rows } = await pool.query("SELECT first_name, last_name FROM users WHERE id= $1", [userID]);
+        const fullname = rows[0].first_name + " " + rows[0].last_name;
+        return fullname;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     doesUsernameExist,
     addUser,
@@ -95,4 +126,7 @@ module.exports = {
     findAllMessages,
     updateMembershipStatus,
     getMemberShipStatus,
+    deleteMessageByID,
+    updateMessageByID,
+    getFullNameByID,
 }

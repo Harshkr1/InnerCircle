@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <%if(isAuthenticated){%>
+    <a class="navbar-brand" href="/">
+        Hi <%=fullName%> !
+    </a>
+    <%} else {%>
+        <a href="/log-in">
+            Log In
+        </a>
+    <%}%>
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/"
+          >Dashboard </a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/update-membership">Be a Elite</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="add-message">Add a Message</a>
+      </li>
+        <%if(isAuthenticated){%>
+                 <li class="nav-item">
+            <a class="nav-link disabled" href="/log-out">Log Out</a>
+        </li>
+    <%}%>
+
+    </ul>
+  </div>
+</nav>
