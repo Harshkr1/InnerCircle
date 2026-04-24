@@ -1,31 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Update Message</title>
-  </head>
-  <body>
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
-    <form action="/update-message?currentMessageId=<%=messageID%>" method="POST">
-      <label for="title">title:</label>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Message</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<%- include("./partials/header.ejs", { fullName, isAuthenticated }) %>
+
+<div class="flex justify-center items-center min-h-screen px-4">
+
+  <form action="/update-message?currentMessageId=<%= messageID %>" method="POST"
+    class="bg-white w-full max-w-lg p-6 rounded-2xl shadow-md flex flex-col gap-5">
+
+    <h2 class="text-2xl font-bold text-center text-yellow-600">
+      Edit Your Post ✏️
+    </h2>
+
+    <!-- Title -->
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-600">Title</label>
       <input
         type="text"
-        placeholder="Your Lovely Title"
-        id="title"
         name="title"
+        value="<%= message.title %>"
+        class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
         required
       />
-      <label for="messageText">Message:</label>
-      <input
-        type="text"
-        placeholder="Hi There lovely people"
-        id="messageText"
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-600">Message</label>
+      <textarea
         name="messageText"
+        rows="4"
+        class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"
         required
-      />
-      <button type="submit">Update</button>
-    </form>
-  </body>
+      ><%= message.message_text %></textarea>
+    </div>
+
+    <div class="flex gap-3">
+
+      <button
+        type="submit"
+        class="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition"
+      >
+        Update 
+      </button>
+
+      <a href="/"
+        class="flex-1 text-center bg-gray-200 py-3 rounded-lg hover:bg-gray-300">
+        Cancel
+      </a>
+
+    </div>
+
+  </form>
+
+</div>
+
+</body>
 </html>

@@ -4,22 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Sign Up</title>
   </head>
-  <body>
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
-    <form action="/sign-up" method="POST">
-      <label for="firstName">First Name:</label>
-      <input type="text" placeholder="John" id="firstName" name="firstName" required />
-      <label for="lastName">Last Name:</label>
-      <input type="text" placeholder="Doe" id="lastName" name="lastName" required />
-      <label for="username">Username:</label>
-      <input type="email" placeholder="abc@email.com" id="username" name="username" required />
-      <label for="password">Password:</label>
-      <input type="password" placeholder="****" id="password" name="password" required />
-      <label for="confirmPassword">Confirm Password:</label>
-      <input type="password" placeholder="****" id="confirmPassword" name="confirmPassword" required />
-      <button type="submit">Register</button>
-    </form>
-  </body>
+<body class="bg-gray-100">
+
+<%- include("./partials/header.ejs", { fullName, isAuthenticated }) %>
+
+<div class="flex flex-col items-center justify-center min-h-screen px-4">
+
+  <!-- Error Section -->
+  <% if (errors && errors.length > 0) { %>
+    <div class="w-full max-w-md mb-4 flex flex-col gap-2">
+      <% errors.forEach(error => { %>
+        <%- include('./partials/partial_error', { error }) %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- Form -->
+  <form action="/sign-up" method="POST"
+    class="bg-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-3">
+
+    <h2 class="text-xl font-bold text-center">Create Account</h2>
+
+    <input name="firstName" placeholder="First Name"
+      class="border p-2 rounded-md focus:ring-2 focus:ring-green-400" required />
+
+    <input name="lastName" placeholder="Last Name"
+      class="border p-2 rounded-md focus:ring-2 focus:ring-green-400" required />
+
+    <input type="email" name="username" placeholder="Email"
+      class="border p-2 rounded-md focus:ring-2 focus:ring-green-400" required />
+
+    <input type="password" name="password" placeholder="Password"
+      class="border p-2 rounded-md focus:ring-2 focus:ring-green-400" required />
+
+    <input type="password" name="confirmPassword" placeholder="Confirm Password"
+      class="border p-2 rounded-md focus:ring-2 focus:ring-green-400" required />
+
+    <button class="bg-green-500 text-white py-2 rounded-md hover:bg-green-600">
+      Register
+    </button>
+
+  </form>
+
+</div>
+
+</body>
 </html>

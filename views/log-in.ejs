@@ -4,16 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Sign Up</title>
   </head>
-  <body>
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
-    <form action="/log-in" method="POST">
-      <label for="username">Username:</label>
-      <input type="email" placeholder="abc@email.com" id="username" name="username" required />
-      <label for="password">Password:</label>
-      <input type="password" placeholder="****" id="password" name="password" required />
-      <button type="submit">Log In</button>
-    </form>
-  </body>
+<body class="bg-gray-100">
+
+<%- include("./partials/header.ejs", { fullName, isAuthenticated }) %>
+
+<div class="flex justify-center items-center h-[80vh]">
+
+  <form action="/log-in" method="POST" class="bg-white p-6 rounded-xl shadow-md w-80 flex flex-col gap-4">
+
+    <h2 class="text-xl font-bold text-center">Login</h2>
+
+    <input type="email" name="username" placeholder="Email"
+      class="border p-2 rounded-md focus:outline-blue-500" required />
+
+    <input type="password" name="password" placeholder="Password"
+      class="border p-2 rounded-md focus:outline-blue-500" required />
+
+    <button class="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+      Log In
+    </button>
+
+  </form>
+
+</div>
+
+</body>
 </html>

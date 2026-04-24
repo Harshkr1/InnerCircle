@@ -1,31 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Index Page</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InnerCircle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-  <body>
+<body class="bg-gray-100">
 
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>
+<%- include("./partials/header.ejs", { fullName, isAuthenticated }) %>
 
+<div class="max-w-2xl mx-auto mt-6 px-4">
 
-    <hr />
+  <% if (!messages || messages.length === 0) { %>
+    <div class="text-center text-gray-500 mt-10">
+      No Messages Yet 
+    </div>
+  <% } else { %>
 
-    <% if (!messages || messages.length === 0) { %>
-      <h2>No Messages Stored</h2>
-    <% } else { %>
-      <% messages.forEach((message) => { %>
-      <%- include('./partials/message', { 
-        message: message, 
-        isAuthenticated: isAuthenticated,
-        memberShipStatus:memberShipStatus,
-        userId:userId,
-      }) %>
+<div class="max-w-5xl mx-auto mt-6 px-4">
+
+  <% if (!messages || messages.length === 0) { %>
+    <div class="text-center text-gray-500 mt-10">
+      No Posts Yet 🚀
+    </div>
+  <% } else { %>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(150px,auto)]">
+
+      <% messages.forEach((message, index) => { 
+          const isLarge = index % 5 === 0; // every 5th post bigger
+      %>
+
+        <div class="<%= isLarge ? 'sm:col-span-2 lg:col-span-2 row-span-2' : '' %>">
+          <%- include('./partials/message', { 
+            message,
+            isAuthenticated,
+            memberShipStatus,
+            userId
+          }) %>
+        </div>
+
       <% }) %>
-    <% } %>
 
-  </body>
+    </div>
+
+  <% } %>
+
+</div>
+
+  <% } %>
+
+</div>
+
+</body>
 </html>

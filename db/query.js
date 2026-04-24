@@ -21,7 +21,8 @@ async function addMessage(userId, title, messageText, username) {
         return true;
     } catch (error) {
         console.log('Message Insertion Error ', error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -31,7 +32,8 @@ async function findUserByUsername(username) {
         return rows;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -41,7 +43,8 @@ async function findUserIdByUsername(username) {
         return rows[0]?.id;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -52,7 +55,8 @@ async function findAllMessages() {
         return rows;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -61,7 +65,8 @@ async function updateMembershipStatus(id) {
         await pool.query("UPDATE users SET membership_status = 'elite' WHERE id= $1 ", [id]);
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -71,7 +76,8 @@ async function getMemberShipStatus(id) {
         return rows[0]?.membership_status;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -81,7 +87,8 @@ async function findUserByID(id) {
         return rows;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -91,7 +98,8 @@ async function deleteMessageByID(messageID) {
         return true;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
@@ -101,18 +109,44 @@ async function updateMessageByID(messageID, title, text) {
         return true;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
+
     }
 }
 
 async function getFullNameByID(userID) {
     try {
-        const { rows } = await pool.query("SELECT first_name, last_name FROM users WHERE id= $1", [userID]);
-        const fullname = rows[0].first_name + " " + rows[0].last_name;
-        return fullname;
+        const { rows } = await pool.query(
+            "SELECT first_name, last_name FROM users WHERE id = $1",
+            [userID]
+        );
+
+        if (rows.length === 0) return null;
+
+        return rows[0].first_name + " " + rows[0].last_name;
+
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        console.error("DB Error:", error.message);
+        throw new Error(error.message);
+    }
+}
+
+
+
+async function getMessageByID(messageID) {
+    try {
+        const { rows } = await pool.query(
+            "SELECT * FROM message WHERE id = $1",
+            [messageID]
+        );
+
+        if (rows.length === 0) return null;
+
+        return rows[0];
+
+    } catch (error) {
+        console.error("DB Error:", error.message);
+        throw new Error(error.message);
     }
 }
 
@@ -129,4 +163,5 @@ module.exports = {
     deleteMessageByID,
     updateMessageByID,
     getFullNameByID,
+    getMessageByID,
 }

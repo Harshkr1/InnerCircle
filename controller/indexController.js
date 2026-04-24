@@ -6,7 +6,7 @@ const passport = require("passport");
 async function showSignUpForm(request, response) {
     const { isAuthenticated, fullName } = getAuthenticationStatusAndFullNameById(request, response);
 
-    response.render("sign-up", { isAuthenticated: isAuthenticated, fullName: fullName });
+    response.render("sign-up", { isAuthenticated: isAuthenticated, fullName: fullName, errors: null });
 }
 
 async function getAuthenticationStatusAndFullNameById(request, response) {
@@ -22,12 +22,14 @@ async function getAuthenticationStatusAndFullNameById(request, response) {
 
 async function loadIndexPage(request, response) {
     try {
-        let userId = null;;
+        let userId = null;
         const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
         let memberShipStatus = null;
         if (isAuthenticated) {
-            memberShipStatus = await db.getMemberShipStatus(userId);
+
             userId = await db.findUserIdByUsername(response.locals.currentUser.username);
+            memberShipStatus = await db.getMemberShipStatus(userId);
+            console.log(memberShipStatus);
             console.log("USER ID IS " + userId);
         }
         const messages = await db.findAllMessages();
@@ -44,9 +46,11 @@ async function showIndexPage(request, response) {
 async function createNewUser(request, response) {
 
     console.log(request.body);
+    const { isAuthenticated, fullName } = getAuthenticationStatusAndFullNameById(request, response);
+
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array() });
+        return response.render("sign-up", { errors: errors.array(), isAuthenticated: isAuthenticated, fullName: fullName });
     }
     const firstName = request.body.firstName;
     const lastName = request.body.lastName;
@@ -140,8 +144,6 @@ async function updateMembershipStatus(request, response) {
             await db.updateMembershipStatus(userId);
             return loadIndexPage(request, response);
         } else {
-            const fullName = await getFullNameById(request, response);
-
             return response.render("update-membership", { isAuthenticated: isAuthenticated, fullName: fullName });
         }
     } catch (error) {
@@ -162,14 +164,15 @@ async function deleteMessage(request, response) {
 }
 
 async function showUpdateMessagePage(request, response) {
+    const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
+
     try {
         if (!request.isAuthenticated()) {
-            return response.render("log-in", { error: "Please login first", fullName: null });
+            return response.render("log-in", { error: "Please login first", fullName: null, isAuthenticated: isAuthenticated });
         }
         const messageID = request.query.messageId;
-        const fullName = await getFullNameById(request, response);
-
-        return response.render("update-message", { messageID: messageID, fullName: fullName });
+        const message = await db.getMessageByID(messageID);
+        return response.render("update-message", { messageID: messageID, fullName: fullName, isAuthenticated: isAuthenticated, message: message });
     } catch (error) {
         console.log(error);
         throw new Error(error);

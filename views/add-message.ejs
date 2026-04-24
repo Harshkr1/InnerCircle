@@ -1,30 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Add Message</title>
-  </head>
-  <body>
-<%- include("./partials/header.ejs", fullName ? { fullName } : {}) %>    <form action="/add-message" method="POST">
-      <label for="title">title:</label>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Message</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<%- include("./partials/header.ejs", { fullName, isAuthenticated }) %>
+
+<div class="flex justify-center items-center min-h-screen px-4">
+
+  <form action="/add-message" method="POST"
+    class="bg-white w-full max-w-lg p-6 rounded-2xl shadow-md flex flex-col gap-5">
+
+    <h2 class="text-2xl font-bold text-center text-blue-600">
+      Create a Post 
+    </h2>
+
+    <!-- Title -->
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-600">Title</label>
       <input
         type="text"
-        placeholder="Your Lovely Title"
-        id="title"
         name="title"
+        placeholder="Give your post a title..."
+        class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         required
       />
-      <label for="messageText">Message:</label>
-      <input
-        type="text"
-        placeholder="Hi There lovely people"
-        id="messageText"
+    </div>
+
+    <!-- Message -->
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-600">Message</label>
+      <textarea
         name="messageText"
+        rows="4"
+        placeholder="Share something with the community..."
+        class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
         required
-      />
-      <button type="submit">Add to Board</button>
-    </form>
-  </body>
+      ></textarea>
+    </div>
+
+    <!-- Button -->
+    <button
+      type="submit"
+      class="bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition"
+    >
+      Post Message 
+    </button>
+
+  </form>
+
+</div>
+
+</body>
 </html>

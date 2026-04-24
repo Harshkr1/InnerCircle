@@ -1,34 +1,56 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <%if(isAuthenticated){%>
-    <a class="navbar-brand" href="/">
-        Hi <%=fullName%> !
-    </a>
-    <%} else {%>
-        <a href="/log-in">
-            Log In
-        </a>
-    <%}%>
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="/"
-          >Dashboard </a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/update-membership">Be a Elite</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="add-message">Add a Message</a>
-      </li>
-        <%if(isAuthenticated){%>
-                 <li class="nav-item">
-            <a class="nav-link disabled" href="/log-out">Log Out</a>
-        </li>
-    <%}%>
+<nav class="bg-white shadow-md">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
 
-    </ul>
+      <!-- Left -->
+      <div class="flex items-center gap-4">
+        <a href="/" class="text-xl font-bold text-blue-600">InnerCircle</a>
+      </div>
+
+      <!-- Right -->
+      <div class="hidden md:flex items-center gap-6">
+
+        <a href="/" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+        <a href="/update-membership" class="text-gray-700 hover:text-blue-600">Elite</a>
+        <a href="/add-message" class="text-gray-700 hover:text-blue-600">Post</a>
+
+        <% if(isAuthenticated){ %>
+          <span class="text-sm text-gray-500">Hi, <%= fullName %></span>
+          <a href="/log-out" class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Logout</a>
+        <% } else { %>
+                  <a href="/sign-up" class="text-blue-500">Sign Up</a>
+
+          <a href="/log-in" class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">Login</a>
+        <% } %>
+
+      </div>
+
+      <!-- Mobile button -->
+      <button id="menuBtn" class="md:hidden text-gray-700 text-2xl">
+        ☰
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden flex flex-col gap-3 pb-4 md:hidden">
+      <a href="/">Dashboard</a>
+      <a href="/update-membership">Elite</a>
+      <a href="/add-message">Post</a>
+
+      <% if(isAuthenticated){ %>
+        <a href="/log-out" class="text-red-500">Logout</a>
+      <% } else { %>
+        <a href="/sign-up" class="text-blue-500">Sign Up</a>
+        <a href="/log-in" class="text-blue-500">Login</a>
+      <% } %>
+    </div>
   </div>
 </nav>
+
+<script>
+  const btn = document.getElementById("menuBtn");
+  const menu = document.getElementById("mobileMenu");
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+</script>
