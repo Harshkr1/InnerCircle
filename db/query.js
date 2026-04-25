@@ -1,4 +1,4 @@
-const pool = require("./Pool");
+const pool = require("./pool");
 
 async function doesUsernameExist(username) {
     const { rows } = await pool.query("SELECT * FROM users WHERE username= $1 LIMIT 1", [username]);
