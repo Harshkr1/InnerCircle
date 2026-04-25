@@ -1,14 +1,21 @@
 const express = require("express");
 const session = require("express-session");
+const pgSimple = require("connect-pg-simple")(session);
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("../db/query");
 const bcrypt = require("bcryptjs");
+const pool = require("./../db/Pool");
 
 require("dotenv").config();
 
 // Initialzing a session
 const currentSession = new session({
+    store: new pgSimple({
+        pool: pool,
+        tableName: 'session',
+        createTableIfMissing: true,
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
