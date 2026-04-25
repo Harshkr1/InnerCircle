@@ -10,8 +10,6 @@ InnerCircle is a full-stack social media web application where users can create,
 
 InnerCircle is built using Node.js, Express, PostgreSQL, and Passport.js. It demonstrates real-world backend concepts such as session management, authentication flows, database design, and scalable architecture.
 
-This project is ideal for showcasing full-stack development skills, especially for software engineering roles.
-
 ---
 
 ## Features
