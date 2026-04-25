@@ -1,7 +1,8 @@
 const express = require("express");
 const messageRouter = express.Router();
-const { showSignUpForm, createNewUser, showLoginPage, logIn, showIndexPage, logOut, showUpdateMemberShipForm, updateMembershipStatus } = require("../controller/indexController.js");
-const { showAddMessagePage, addNewMessage, deleteMessage, showUpdateMessagePage, updateMessage } = require("../controller/messageController.js");
+const { showAddMessagePage, addNewMessage, deleteMessage, showUpdateMessagePage, updateMessage,isRouteAuthenticated} = require("../controller/messageController.js");
+
+messageRouter.use(isRouteAuthenticated);
 
 messageRouter.get("/add-message", showAddMessagePage);
 messageRouter.post("/add-message", addNewMessage);

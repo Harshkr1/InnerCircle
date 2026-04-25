@@ -4,8 +4,11 @@ const { validationResult } = require("express-validator");
 const passport = require("passport");
 const { getAuthenticationStatusAndFullNameById, loadIndexPage } = require(".//indexController.js");
 
-async function isAuthenticated(request, response, next) {
+// addin route protection here
+async function isRouteAuthenticated(request, response, next) {
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
+    response.locals.isAuthenticated = isAuthenticated;
+    response.locals.fullName = fullName;
 
     if (!request.isAuthenticated()) {
         return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
@@ -14,20 +17,10 @@ async function isAuthenticated(request, response, next) {
 }
 
 async function showAddMessagePage(request, response, next) {
-    const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-
-    if (!request.isAuthenticated()) {
-        return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
-    }
-    return response.render("add-message", { isAuthenticated: isAuthenticated, fullName: fullName });
+    return response.render("add-message", { isAuthenticated: response.locals.isAuthenticated, fullName: response.locals.fullName });
 }
 
 async function addNewMessage(request, response, next) {
-    const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-
-    if (!request.isAuthenticated()) {
-        return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
-    }
     try {
         const title = request.body.title;
         const message = request.body.messageText;
@@ -53,15 +46,10 @@ async function deleteMessage(request, response) {
 }
 
 async function showUpdateMessagePage(request, response) {
-    const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-
     try {
-        if (!request.isAuthenticated()) {
-            return response.render("log-in", { errors: ["Please login first"], fullName: null, isAuthenticated: isAuthenticated });
-        }
         const messageID = request.query.messageId;
         const message = await db.getMessageByID(messageID);
-        return response.render("update-message", { messageID: messageID, fullName: fullName, isAuthenticated: isAuthenticated, message: message });
+        return response.render("update-message", { messageID: messageID, fullName: response.locals.fullName, isAuthenticated: response.locals.isAuthenticated, message: message });
     } catch (error) {
         console.log(error);
         throw new Error(error);
@@ -69,12 +57,7 @@ async function showUpdateMessagePage(request, response) {
 }
 
 async function updateMessage(request, response) {
-    const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-
     try {
-        if (!request.isAuthenticated()) {
-            return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
-        }
         const messageID = request.query.currentMessageId;
         const title = request.body.title;
         const message = request.body.messageText;
@@ -87,6 +70,7 @@ async function updateMessage(request, response) {
 }
 
 module.exports = {
+    isRouteAuthenticated,
     showAddMessagePage,
     addNewMessage,
     deleteMessage,
