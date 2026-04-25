@@ -40,7 +40,7 @@ async function loadIndexPage(request, response) {
 };
 
 async function showIndexPage(request, response) {
-    await loadIndexPage(request, response);
+    return await loadIndexPage(request, response);
 }
 
 async function createNewUser(request, response) {
@@ -76,7 +76,7 @@ async function showLoginPage(request, response) {
     // if already authenticated then not need to Authenticate again
     const logInErrors = request.flash("error");
     if (request.isAuthenticated()) {
-        return loadIndexPage(request, response);
+        return response.redirect("/");
     }
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
     return response.render("log-in", { errors: logInErrors || [], isAuthenticated: isAuthenticated, fullName: fullName });
@@ -116,7 +116,7 @@ async function updateMembershipStatus(request, response) {
         if (request.body.answer == "echo") {
             const userId = await db.findUserIdByUsername(response.locals.currentUser.username);
             await db.updateMembershipStatus(userId);
-            return loadIndexPage(request, response);
+            return response.redirect("/");
         } else {
             return response.render("update-membership", { isAuthenticated: isAuthenticated, fullName: fullName });
         }
@@ -136,5 +136,4 @@ module.exports = {
     showUpdateMemberShipForm,
     updateMembershipStatus,
     getAuthenticationStatusAndFullNameById,
-    loadIndexPage,
 }

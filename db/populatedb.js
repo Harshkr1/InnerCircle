@@ -29,12 +29,13 @@ async function createTables() {
     `);
 
         await client.query(`
-      CREATE TABLE IF NOT EXISTS messages (
+      CREATE TABLE IF NOT EXISTS message (
         id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
         title TEXT,
         message_text TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        username VARCHAR(50)
       );
     `);
 
@@ -61,17 +62,17 @@ async function createTables() {
         }
 
         await client.query(`
-            INSERT INTO messages (user_id, title, message_text)
-            VALUES ($1, 'Welcome to InnerCircle', 'This is your first post 🚀')
+            INSERT INTO message (user_id, title, message_text)
+            VALUES ($1, 'Welcome to InnerCircle', 'This is your first post ')
             ON CONFLICT DO NOTHING;
             `, [userId]);
 
-        console.log("✅ Sample data inserted");
+        console.log(" Sample data inserted");
     } catch (error) {
         console.error(" Error creating tables:", error);
     } finally {
         await client.end();
-        console.log("🔌 DB connection closed");
+        console.log(" DB connection closed");
     }
 }
 

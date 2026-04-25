@@ -2,7 +2,7 @@ const db = require("../db/query");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const passport = require("passport");
-const { getAuthenticationStatusAndFullNameById, loadIndexPage } = require(".//indexController.js");
+const { getAuthenticationStatusAndFullNameById } = require(".//indexController.js");
 
 // addin route protection here
 async function isRouteAuthenticated(request, response, next) {
@@ -27,7 +27,7 @@ async function addNewMessage(request, response, next) {
         const username = response.locals.currentUser.username;
         const userId = await db.findUserIdByUsername(username);
         await db.addMessage(userId, title, message, username);
-        return loadIndexPage(request, response);
+        return response.redirect("/");
     } catch (error) {
         throw new Error(error);
     }
@@ -38,7 +38,7 @@ async function deleteMessage(request, response) {
     try {
         const messageID = request.query.messageId;
         await db.deleteMessageByID(messageID);
-        return loadIndexPage(request, response);
+        return response.redirect("/");
     } catch (error) {
         console.log(error);
         throw new Error(error);
@@ -62,7 +62,7 @@ async function updateMessage(request, response) {
         const title = request.body.title;
         const message = request.body.messageText;
         await db.updateMessageByID(messageID, title, message);
-        return loadIndexPage(request, response);
+        return response.redirect("/");
     } catch (error) {
         console.log(error);
         throw new Error(error);
