@@ -66,7 +66,7 @@ async function createNewUser(request, response) {
         const hashedPassword = await bcrypt.hash(password, 10 /* saltLength */)
         await db.addUser(firstName, lastName, username, hashedPassword);
         const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-        response.render("log-in", { isAuthenticated: isAuthenticated, fullName: null });
+        response.render("log-in", { errors: [], isAuthenticated: isAuthenticated, fullName: null });
     } catch (error) {
         throw new Error(error);
     }
@@ -78,7 +78,7 @@ async function showLoginPage(request, response) {
         loadIndexPage(request, response);
     }
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-    response.render("log-in", { isAuthenticated: isAuthenticated, fullName: fullName });
+    response.render("log-in", { errors: [], isAuthenticated: isAuthenticated, fullName: fullName });
 }
 
 async function logIn(request, response, next) {
@@ -101,8 +101,7 @@ async function showAddMessagePage(request, response, next) {
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
 
     if (!request.isAuthenticated()) {
-
-        return response.render("log-in", { error: "Please login first", isAuthenticated: isAuthenticated, fullName: fullName });
+        return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
     }
     return response.render("add-message", { isAuthenticated: isAuthenticated, fullName: fullName });
 }
@@ -111,7 +110,7 @@ async function addNewMessage(request, response, next) {
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
 
     if (!request.isAuthenticated()) {
-        return response.render("log-in", { error: "Please login first", isAuthenticated: isAuthenticated, fullName: fullName });
+        return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
     }
     try {
         const title = request.body.title;
@@ -129,7 +128,7 @@ async function showUpdateMemberShipForm(request, response, next) {
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
 
     if (!request.isAuthenticated()) {
-        return response.render("log-in", { error: "Please login first", isAuthenticated: isAuthenticated, fullName: fullName });
+        return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
     }
 
     response.render("update-membership", { isAuthenticated: isAuthenticated, fullName: fullName });
@@ -168,7 +167,7 @@ async function showUpdateMessagePage(request, response) {
 
     try {
         if (!request.isAuthenticated()) {
-            return response.render("log-in", { error: "Please login first", fullName: null, isAuthenticated: isAuthenticated });
+            return response.render("log-in", { errors: ["Please login first"], fullName: null, isAuthenticated: isAuthenticated });
         }
         const messageID = request.query.messageId;
         const message = await db.getMessageByID(messageID);
@@ -184,7 +183,7 @@ async function updateMessage(request, response) {
 
     try {
         if (!request.isAuthenticated()) {
-            return response.render("log-in", { error: "Please login first", isAuthenticated: isAuthenticated, fullName: fullName });
+            return response.render("log-in", { errors: ["Please login first"], isAuthenticated: isAuthenticated, fullName: fullName });
         }
         const messageID = request.query.currentMessageId;
         const title = request.body.title;
