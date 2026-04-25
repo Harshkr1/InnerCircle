@@ -12,7 +12,7 @@
 
         <a href="/" class="text-gray-700 hover:text-blue-600">Dashboard</a>
         <a href="/update-membership" class="text-gray-700 hover:text-blue-600">Elite</a>
-        <a href="/add-message" class="text-gray-700 hover:text-blue-600">Post</a>
+        <a href="/message/add-message" class="text-gray-700 hover:text-blue-600">Post</a>
 
         <% if(isAuthenticated){ %>
           <span class="text-sm text-gray-500">Hi, <%= fullName %></span>
@@ -35,7 +35,7 @@
     <div id="mobileMenu" class="hidden flex flex-col gap-3 pb-4 md:hidden">
       <a href="/">Dashboard</a>
       <a href="/update-membership">Elite</a>
-      <a href="/add-message">Post</a>
+      <a href="/message/add-message">Post</a>
 
       <% if(isAuthenticated){ %>
         <a href="/log-out" class="text-red-500">Logout</a>

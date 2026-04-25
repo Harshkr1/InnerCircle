@@ -14,16 +14,8 @@ indexRouter.post("/log-in", logIn);
 
 indexRouter.get("/log-out", logOut);
 
-indexRouter.get("/add-message", showAddMessagePage);
-indexRouter.post("/add-message", addNewMessage);
-
 indexRouter.get("/update-membership", showUpdateMemberShipForm);
 indexRouter.post("/update-membership", updateMembershipStatus);
-
-indexRouter.get("/delete", deleteMessage);
-
-indexRouter.get("/update-message", showUpdateMessagePage);
-indexRouter.post("/update-message", updateMessage);
 
 module.exports = {
     indexRouter,

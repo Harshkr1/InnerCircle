@@ -7,20 +7,20 @@
         <%= (memberShipStatus === "elite" || message.user_id == userId) ? message.username : "Anonymous" %>
       </p>
       <p class="text-xs text-gray-400">
-<%= memberShipStatus === "elite" 
-  ? new Date(message.created_at).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    })
-  : "****" 
-%>      </p>
+      <%= memberShipStatus === "elite" 
+        ? new Date(message.created_at).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+          })
+        : "****" 
+      %>      </p>
     </div>
 
     <% if(message.user_id == userId){ %>
       <div class="text-xs flex gap-2">
-        <a href="/update-message?messageId=<%=message.id%>" class="text-blue-500 hover:underline">Edit</a>
-        <a href="/delete?messageId=<%=message.id%>" class="text-red-500 hover:underline">Delete</a>
+        <a href="/message/update-message?messageId=<%=message.id%>" class="text-blue-500 hover:underline">Edit</a>
+        <a href="/message/delete?messageId=<%=message.id%>" class="text-red-500 hover:underline">Delete</a>
       </div>
     <% } %>
   </div>

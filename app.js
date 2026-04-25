@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const { indexRouter } = require("./routers/indexRouter.js");
+const { messageRouter } = require("./routers/messageRouter.js");
 const session = require("express-session");
 require("dotenv").config();
 const passport = require("passport");
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/", indexRouter);
+app.use("/message", messageRouter);
 
 app.listen(PORT, (error) => {
   if (error) {
