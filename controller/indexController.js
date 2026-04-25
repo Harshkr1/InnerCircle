@@ -74,17 +74,19 @@ async function createNewUser(request, response) {
 
 async function showLoginPage(request, response) {
     // if already authenticated then not need to Authenticate again
+    const logInErrors = request.flash("error");
     if (request.isAuthenticated()) {
-        loadIndexPage(request, response);
+        return loadIndexPage(request, response);
     }
     const { isAuthenticated, fullName } = await getAuthenticationStatusAndFullNameById(request, response);
-    response.render("log-in", { errors: [], isAuthenticated: isAuthenticated, fullName: fullName });
+    return response.render("log-in", { errors: logInErrors || [], isAuthenticated: isAuthenticated, fullName: fullName });
 }
 
 async function logIn(request, response, next) {
     passport.authenticate("local", {
         successRedirect: "/",
-        failureRedirect: "/log-in"
+        failureRedirect: "/log-in",
+        failureFlash: true,
     })(request, response, next);
 }
 

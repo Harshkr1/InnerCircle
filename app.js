@@ -8,6 +8,7 @@ require("dotenv").config();
 const passport = require("passport");
 const { CurrentLocalStrategy, currentSession } = require("./routers/auth.js");
 const db = require(".//db/query");
+const flash = require("connect-flash");
 
 const PORT = process.env.PORT || 3030;
 
@@ -21,6 +22,7 @@ app.use(express.static("public"));
 
 // first make it use sessions
 app.use(currentSession)
+app.use(flash());
 // make passport use this session created via express-session here so that inside cookies we can insert our name
 app.use(passport.session());
 // make passport use our localstrategy
